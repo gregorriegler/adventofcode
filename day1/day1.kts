@@ -1,16 +1,20 @@
+#!/usr/bin/env kscript
+@file:DependsOn("org.apache.commons:commons-math3:3.6.1")
 import org.apache.commons.math3.util.CombinatoricsUtils.combinationsIterator
 import java.io.File
 
+main()
+
 fun main() {
     val start = System.currentTimeMillis()
-    println(productOfFirstTwoEntriesThatSumToOrElse(2020, "day1/input.txt", -1))
+    println(productOfFirstTwoEntriesThatSumToOrElse(2020, "input.txt", -1))
     println("took " + (System.currentTimeMillis() - start))
 
     val start2 = System.currentTimeMillis()
-    println(productOfFirstNEntriesWhoseSumIs(2, 2020, "day1/input.txt"))
+    println(productOfFirstNEntriesWhoseSumIs(2, 2020, "input.txt"))
     println("took " + (System.currentTimeMillis() - start2))
 
-    println(productOfFirstNEntriesWhoseSumIs(3, 2020, "day1/input.txt"))
+    println(productOfFirstNEntriesWhoseSumIs(3, 2020, "input.txt"))
 }
 
 fun productOfFirstTwoEntriesThatSumToOrElse(amount: Int, pathToReport: String, orElse: Int): Int {
