@@ -2,33 +2,37 @@
 @file:DependsOn("org.apache.commons:commons-math3:3.6.1")
 
 import org.apache.commons.math3.util.CombinatoricsUtils.combinationsIterator
+import java.io.BufferedReader
 import java.io.File
 
 main()
 
 fun main() {
-    assert(productOfFirstTwoEntriesThatSumToOrElse(2020, "report", -1) == 514579)
-    assert(productOfFirstNEntriesWhoseSumIsNew(2, 2020, "report") == 514579)
 
     trackDuration({
-        println(productOfFirstTwoEntriesThatSumToOrElse(2020, "input.txt", -1))
+        println("" + loop("input.txt", 2020, -1) + " [loops]")
     })
 
     trackDuration({
-        println(productOfFirstNEntriesWhoseSumIs(2, 2020, "input.txt"))
+        println("" + commonsMath("input.txt", 2, 2020) + " [apache commons-math]")
     })
 
     trackDuration({
-        println(productOfFirstNEntriesWhoseSumIs(3, 2020, "input.txt"))
+        println("" + commonsMath("input.txt",3, 2020) + " [apache commons-math]")
     })
 
     trackDuration({
-        println(productOfFirstNEntriesWhoseSumIsNew(3, 2020, "input.txt"))
+        println("" + recursiveGenerator("input.txt", 2, 2020) + " [recursive combinations generator]")
     })
+
+    trackDuration({
+        println("" + recursiveGenerator("input.txt", 3, 2020) + " [recursive combinations generator]")
+    })
+
 }
 
-fun productOfFirstTwoEntriesThatSumToOrElse(amount: Int, pathToReport: String, orElse: Int): Int {
-    val reader = File(pathToReport).bufferedReader()
+fun loop(report: String, amount: Int, orElse: Int): Int {
+    val reader = File(report).bufferedReader()
     val read = arrayListOf(reader.readLine()?.toInt() ?: return orElse)
     while (true) {
         val next = reader.readLine()?.toInt() ?: return orElse
@@ -40,41 +44,55 @@ fun productOfFirstTwoEntriesThatSumToOrElse(amount: Int, pathToReport: String, o
     }
 }
 
-fun productOfFirstNEntriesWhoseSumIs(n: Int, amount: Int, pathToReport: String): Int {
-    val lines = File(pathToReport).readLines().map { it.toInt() }
+fun commonsMath(report: String, n: Int, amount: Int): Int {
+    return File(report)
+        .readLines()
+        .map { it.toInt() }
+        .commonsCombinations(n)
+        .first { it.hasSumEqualTo(amount) }
+        .product()
+}
 
-    return combinationsIterator(lines.size, n)
+fun recursiveGenerator(file: String, k: Int, sum: Int): Int {
+    return File(file)
+        .readLines()
+        .map { it.toInt() }
+        .combinations(k)
+        .first { it.hasSumEqualTo(sum) }
+        .product()
+}
+
+fun <T> List<T>.commonsCombinations(k: Int): Sequence<List<T>> {
+    return combinationsIterator(this.size, k)
         .asSequence()
-        .map { it.map { x -> lines[x] } }
-        .first { it.sum() == amount }
-        .reduce { product, it -> product * it }
+        .map { it -> it.map { this[it] } }
 }
 
-fun productOfFirstNEntriesWhoseSumIsNew(n: Int, amount: Int, pathToReport: String): Int {
-    val lines = File(pathToReport).readLines().map { it.toInt() }
 
-    return lines.combinations(n)
-        .first { it.sum() == amount }
-        .reduce { acc, i -> i * acc }
+
+fun <T> List<T>.combinations(k: Int): Sequence<List<T>> {
+    return recursiveCombinationGenerator(this, k)
 }
 
-fun <T> Iterable<T>.combinations(n: Int): Sequence<List<T>> = sequence {
-    val pool = this@combinations.toList()
-    val poolSize = pool.size
-    if (n > poolSize) return@sequence
-    yield(pool.take(n))
-    val indices = IntArray(n) { it }
-
-    while (indices[0] != poolSize - n) {
-        var i = n - 1
-        while (indices[i] == i + poolSize - n) i--
-
-        indices[i]++
-        for (j in (i + 1) until n) {
-            indices[j] = indices[j - 1] + 1
+fun <T> recursiveCombinationGenerator(input: List<T>, k: Int, building: MutableList<T> = mutableListOf()): Sequence<List<T>> {
+    return sequence {
+        if (building.size == k) {
+            yield(building.toList())
+        } else if (input.isNotEmpty()) {
+            val first: T = input[0]
+            val rest: List<T> = input.drop(1)
+            yieldAll(recursiveCombinationGenerator(rest, k, building.plus(first).toMutableList()))
+            yieldAll(recursiveCombinationGenerator(rest, k, building))
         }
-        yield(indices.map { pool[it] })
     }
+}
+
+fun List<Int>.hasSumEqualTo(expected: Int): Boolean {
+    return this.sum() == expected
+}
+
+fun Iterable<Int>.product(): Int {
+    return reduce { acc, it -> acc * it }
 }
 
 fun trackDuration(func: () -> Unit) {
