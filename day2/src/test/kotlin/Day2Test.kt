@@ -1,7 +1,7 @@
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class day2test {
+class Day2Test {
 
     private val charsCountRule: (String) -> PasswordRule = { CharsCountRule(it) }
     private var charPositionRule: (String) -> PasswordRule = { CharPositionRule(it) }
