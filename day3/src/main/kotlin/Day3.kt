@@ -24,7 +24,6 @@ fun solution(input: String, vararg list: Pair<Int, Int>): Long {
     val wood = Wood(input)
     return list.map { (nextCol, nextRow) -> RightDownSlope(wood, nextCol, nextRow) }
         .map { slope -> slope.toList().count { it.isTree } }
-        .onEach { println(it) }
         .map { it.toLong() }
         .reduce { acc: Long, it -> acc * it }
 }
