@@ -21,8 +21,8 @@ fun day3Part2(input: String): Long = solution(
 )
 
 fun solution(input: String, vararg list: Pair<Int, Int>): Long =
-    Wood(input).let {
-        list.map { (nextCol, nextRow) -> RightDownSlope(it, nextCol, nextRow) }
+    Wood(input).let { wood ->
+        list.map { (nextCol, nextRow) -> RightDownSlope(wood, nextCol, nextRow) }
             .map { slope -> slope.toList().count { it.isTree }.toLong() }
             .reduce { acc: Long, count -> acc * count }
     }
