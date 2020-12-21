@@ -4,67 +4,24 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class Day3Test {
+
     @Test
     fun acceptance() {
-        val result: Int = day3(
-            """
-            ..##.......
-            #...#...#..
-            .#....#..#.
-            ..#.#...#.#
-            .#...##..#.
-            ..#.##.....
-            .#.#.#....#
-            .#........#
-            #.##...#...
-            #...##....#
-            .#..#...#.#
-            """.trimIndent()
-        )
+        val result: Int = day3(woodInput())
 
         assertThat(result).isEqualTo(7)
     }
 
     @Test
     fun acceptance_part2() {
-        val result: Int = day3Part2(
-            """
-            ..##.......
-            #...#...#..
-            .#....#..#.
-            ..#.#...#.#
-            .#...##..#.
-            ..#.##.....
-            .#.#.#....#
-            .#........#
-            #.##...#...
-            #...##....#
-            .#..#...#.#
-            """.trimIndent()
-        )
+        val result: Int = day3Part2(woodInput())
 
         assertThat(result).isEqualTo(336)
     }
 
     @Test
     fun `right 3 down 1 slope`() {
-        val slope = RightDownSlope(
-            Wood(
-                """
-            ..##.......
-            #...#...#..
-            .#....#..#.
-            ..#.#...#.#
-            .#...##..#.
-            ..#.##.....
-            .#.#.#....#
-            .#........#
-            #.##...#...
-            #...##....#
-            .#..#...#.#
-        """.trimIndent()
-            ), 3, 1
-        )
+        val slope = RightDownSlope(Wood(woodInput()), 3, 1)
 
         assertThat(slope.iterator().hasNext()).isTrue
         assertThat(slope.iterator().next()).isEqualTo(O)
@@ -105,4 +62,18 @@ class Day3Test {
         assertThat(iterator.next()).isEqualTo(0)
         assertThat(iterator.next()).isEqualTo(1)
     }
+
+    private fun woodInput() = """
+                ..##.......
+                #...#...#..
+                .#....#..#.
+                ..#.#...#.#
+                .#...##..#.
+                ..#.##.....
+                .#.#.#....#
+                .#........#
+                #.##...#...
+                #...##....#
+                .#..#...#.#
+                """.trimIndent()
 }
