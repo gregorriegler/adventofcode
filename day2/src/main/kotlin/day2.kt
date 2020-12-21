@@ -4,7 +4,7 @@ fun main() {
     println(
         countValidPasswords(
             File("day2/input.txt").readLines()
-        ) { CharsCountRule(it) }
+        ) { CharPositionRule(it) }
     )
 }
 
@@ -19,7 +19,7 @@ fun validate(line: String, ruleSupplier: (String) -> PasswordRule): Boolean {
 
 fun split(line: String, ruleSupplier: (String) -> PasswordRule): Pair<PasswordRule, String> {
     val split = line.split(':')
-    return Pair(ruleSupplier.invoke(split[0]), split[1])
+    return Pair(ruleSupplier.invoke(split[0]), split[1].trim())
 }
 
 interface PasswordRule {
@@ -38,6 +38,20 @@ class CharsCountRule(private val spec: String) : PasswordRule {
     private fun range() = spec.split(' ')[0]
         .split('-')
         .map { it.toInt() }
+
+    private fun char() = spec.last()
+}
+
+class CharPositionRule(private val spec: String) : PasswordRule {
+
+    override fun isValid(password: String): Boolean {
+        return positions().filter { password.length > it && password[it] == char() }
+            .count() == 1
+    }
+
+    private fun positions() = spec.split(' ')[0]
+        .split('-')
+        .map { it.toInt() - 1 }
 
     private fun char() = spec.last()
 }
