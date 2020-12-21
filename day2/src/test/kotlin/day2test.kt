@@ -7,36 +7,36 @@ class day2test {
     fun acceptance() {
         assertThat(
             countValidPasswords(
-            """
-            1-3 a: abcde
-            1-3 b: cdefg
-            2-9 c: ccccccccc
-            """.trimIndent().lines()
-            )
+                """
+                1-3 a: abcde
+                1-3 b: cdefg
+                2-9 c: ccccccccc
+                """.trimIndent().lines()
+            ) { CharsCountRule(it) }
         ).isEqualTo(2)
     }
 
     @Test
     fun validateLine() {
-        assertValid("1-3 a: abcde")
-        assertValid("2-9 c: ccccccccc")
-        assertInvalid("1-3 b: cdefg")
+        assertValid("1-3 a: abcde") { CharsCountRule(it) }
+        assertValid("2-9 c: ccccccccc") { CharsCountRule(it) }
+        assertInvalid("1-3 b: cdefg") { CharsCountRule(it) }
     }
 
     @Test
-    fun passwordRule() {
-        val rule = PasswordRule("1-1 a")
+    fun charsCountPasswordRule() {
+        val rule = CharsCountRule("1-1 a")
         assertThat(rule.isValid("a")).isTrue
         assertThat(rule.isValid("b")).isFalse
         assertThat(rule.isValid("aa")).isFalse
     }
 
-    private fun assertValid(input: String) {
-        assertThat(validate(input)).isTrue
+    private fun assertValid(input: String, ruleSupplier: (String) -> PasswordRule) {
+        assertThat(validate(input, ruleSupplier)).isTrue
     }
 
-    private fun assertInvalid(input: String) {
-        assertThat(validate(input)).isFalse
+    private fun assertInvalid(input: String, ruleSupplier: (String) -> PasswordRule) {
+        assertThat(validate(input, ruleSupplier)).isFalse
     }
 
 
