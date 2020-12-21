@@ -7,14 +7,14 @@ class Day3Test {
 
     @Test
     fun acceptance() {
-        val result: Int = day3(woodInput())
+        val result: Long = day3(woodInput())
 
         assertThat(result).isEqualTo(7)
     }
 
     @Test
     fun acceptance_part2() {
-        val result: Int = day3Part2(woodInput())
+        val result: Long = day3Part2(woodInput())
 
         assertThat(result).isEqualTo(336)
     }
@@ -36,7 +36,7 @@ class Day3Test {
             """
             .#
             #.
-        """.trimIndent()
+            """.trimIndent()
         )
 
         assertThat(wood.at(0, 0)).isEqualTo(O)
@@ -63,17 +63,18 @@ class Day3Test {
         assertThat(iterator.next()).isEqualTo(1)
     }
 
-    private fun woodInput() = """
-                ..##.......
-                #...#...#..
-                .#....#..#.
-                ..#.#...#.#
-                .#...##..#.
-                ..#.##.....
-                .#.#.#....#
-                .#........#
-                #.##...#...
-                #...##....#
-                .#..#...#.#
-                """.trimIndent()
+    private fun woodInput() =
+        """
+        ..##.......
+        #...#...#..
+        .#....#..#.
+        ..#.#...#.#
+        .#...##..#.
+        ..#.##.....
+        .#.#.#....#
+        .#........#
+        #.##...#...
+        #...##....#
+        .#..#...#.#
+        """.trimIndent()
 }

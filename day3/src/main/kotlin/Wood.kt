@@ -1,5 +1,4 @@
 class Wood(input: String) {
-
     private val rows: List<Row> = input.lines().map { Row(it) }
 
     fun at(row: Int, col: Int): Field? {
@@ -9,11 +8,9 @@ class Wood(input: String) {
 }
 
 class Row(row: String): Sequence<Field> {
-
     private val cols: List<Field> = row.toCharArray().map(Field.Companion::of)
 
     override fun iterator(): Iterator<Field> = LoopingIterator(cols)
-
 }
 
 /**

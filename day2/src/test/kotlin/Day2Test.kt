@@ -70,6 +70,4 @@ class Day2Test {
     private fun assertInvalid(input: String, ruleSupplier: (String) -> PasswordRule) {
         assertThat(validate(input, ruleSupplier)).isFalse
     }
-
-
 }

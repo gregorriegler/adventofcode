@@ -2,13 +2,11 @@
 @file:DependsOn("org.apache.commons:commons-math3:3.6.1")
 
 import org.apache.commons.math3.util.CombinatoricsUtils.combinationsIterator
-import java.io.BufferedReader
 import java.io.File
 
 main()
 
 fun main() {
-
     trackDuration({
         println("" + loop("input.txt", 2020, -1) + " [loops]")
     })
@@ -28,7 +26,6 @@ fun main() {
     trackDuration({
         println("" + recursiveGenerator("input.txt", 3, 2020) + " [recursive combinations generator]")
     })
-
 }
 
 fun loop(report: String, amount: Int, orElse: Int): Int {
@@ -67,8 +64,6 @@ fun <T> List<T>.commonsCombinations(k: Int): Sequence<List<T>> {
         .asSequence()
         .map { it -> it.map { this[it] } }
 }
-
-
 
 fun <T> List<T>.combinations(k: Int): Sequence<List<T>> {
     return recursiveCombinationGenerator(this, k)

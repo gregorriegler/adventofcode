@@ -1,15 +1,14 @@
 import java.io.File
 
 fun main() {
-    println(
-        countValidPasswords(
-            File("day2/input.txt").readLines()
-        ) { CharPositionRule(it) }
-    )
+    countValidPasswords(
+        File("day2/input.txt").readLines()
+    ) { CharPositionRule(it) }
+        .let { println(it) }
 }
 
-fun countValidPasswords(lines: List<String>, rulesSupplier: (String) -> PasswordRule): Int {
-    return lines.count { validate(it, rulesSupplier) }
+fun countValidPasswords(lines: List<String>, ruleSupplier: (String) -> PasswordRule): Int {
+    return lines.count { validate(it, ruleSupplier) }
 }
 
 fun validate(line: String, ruleSupplier: (String) -> PasswordRule): Boolean {
@@ -27,7 +26,6 @@ interface PasswordRule {
 }
 
 class CharsCountRule(private val spec: String) : PasswordRule {
-
     override fun isValid(password: String): Boolean {
         val (min, max) = range()
         return password.filter { char() == it }
@@ -43,7 +41,6 @@ class CharsCountRule(private val spec: String) : PasswordRule {
 }
 
 class CharPositionRule(private val spec: String) : PasswordRule {
-
     override fun isValid(password: String): Boolean {
         return positions().filter { password.length > it && password[it] == char() }
             .count() == 1

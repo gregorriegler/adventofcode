@@ -1,3 +1,1 @@
-interface Slope : Sequence<Field> {
-
-}
+interface Slope : Sequence<Field>
