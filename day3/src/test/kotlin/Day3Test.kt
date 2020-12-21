@@ -26,8 +26,29 @@ class Day3Test {
     }
 
     @Test
+    fun acceptance_part2() {
+        val result: Int = day3Part2(
+            """
+            ..##.......
+            #...#...#..
+            .#....#..#.
+            ..#.#...#.#
+            .#...##..#.
+            ..#.##.....
+            .#.#.#....#
+            .#........#
+            #.##...#...
+            #...##....#
+            .#..#...#.#
+            """.trimIndent()
+        )
+
+        assertThat(result).isEqualTo(336)
+    }
+
+    @Test
     fun `right 3 down 1 slope`() {
-        val slope = Right3Down1Slope(
+        val slope = RightDownSlope(
             Wood(
                 """
             ..##.......
@@ -42,7 +63,7 @@ class Day3Test {
             #...##....#
             .#..#...#.#
         """.trimIndent()
-            )
+            ), 3, 1
         )
 
         assertThat(slope.iterator().hasNext()).isTrue
