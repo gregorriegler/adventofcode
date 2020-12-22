@@ -63,9 +63,27 @@ enum class Field {
     iyr {
         override fun valid(value: String?): Boolean = withinRange(value, 2010, 2020)
     },
-    eyr{
+    eyr {
         override fun valid(value: String?): Boolean = withinRange(value, 2020, 2030)
-    }, hgt, hcl, ecl, pid,
+    },
+    hgt {
+        override fun valid(value: String?): Boolean {
+            return when {
+                value == null -> {
+                    false
+                }
+                value.endsWith("cm") -> {
+                    (150..193).contains(value.removeSuffix("cm").toInt())
+                }
+                value.endsWith("in") -> {
+                    (59..76).contains(value.removeSuffix("in").toInt())
+                }
+                else -> {
+                    false
+                }
+            }
+        }
+    }, hcl, ecl, pid,
 
     cid {
         override fun valid(value: String?): Boolean = true
@@ -73,5 +91,6 @@ enum class Field {
 
     open fun valid(value: String?): Boolean = value != null
 
-    protected fun withinRange(value: String?, from: Int, to: Int) = value?.let { (from..to).contains(it.toInt()) } ?: false
+    protected fun withinRange(value: String?, from: Int, to: Int) =
+        value?.let { (from..to).contains(it.toInt()) } ?: false
 }

@@ -59,7 +59,7 @@ class Day4Test {
                     Pair(byr, "1920"),
                     Pair(iyr, "2010"),
                     Pair(eyr, "2020"),
-                    Pair(hgt, "1"),
+                    Pair(hgt, "150cm"),
                     Pair(hcl, "1"),
                     Pair(ecl, "1"),
                     Pair(pid, "1"),
@@ -73,7 +73,7 @@ class Day4Test {
                     Pair(byr, "1920"),
                     Pair(iyr, "2010"),
                     Pair(eyr, "2020"),
-                    Pair(hgt, "1"),
+                    Pair(hgt, "150cm"),
                     Pair(hcl, "1"),
                     Pair(ecl, "1"),
                     Pair(pid, "1")
@@ -110,6 +110,20 @@ class Day4Test {
         assertThat(eyr.valid("2020")).isTrue
         assertThat(eyr.valid("2030")).isTrue
         assertThat(eyr.valid("2031")).isFalse
+    }
+
+    @Test
+    fun `validate hgt`() {
+        assertThat(hgt.valid(null)).isFalse
+        assertThat(hgt.valid("149cm")).isFalse
+        assertThat(hgt.valid("150cm")).isTrue
+        assertThat(hgt.valid("193cm")).isTrue
+        assertThat(hgt.valid("194cm")).isFalse
+        assertThat(hgt.valid("58in")).isFalse
+        assertThat(hgt.valid("59in")).isTrue
+        assertThat(hgt.valid("76in")).isTrue
+        assertThat(hgt.valid("77in")).isFalse
+        assertThat(hgt.valid("77mm")).isFalse
     }
 }
 
