@@ -83,7 +83,13 @@ enum class Field {
                 }
             }
         }
-    }, hcl, ecl, pid,
+    },
+    hcl {
+        override fun valid(value: String?): Boolean {
+            return value?.let { Regex("#[0-9a-f]{6}").matches(it) } ?: false
+        }
+    },
+    ecl, pid,
 
     cid {
         override fun valid(value: String?): Boolean = true
