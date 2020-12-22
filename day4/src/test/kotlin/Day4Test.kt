@@ -61,7 +61,7 @@ class Day4Test {
                     Pair(eyr, "2020"),
                     Pair(hgt, "150cm"),
                     Pair(hcl, "#ffffff"),
-                    Pair(ecl, "1"),
+                    Pair(ecl, "amb"),
                     Pair(pid, "1"),
                     Pair(cid, "1"),
                 )
@@ -75,7 +75,7 @@ class Day4Test {
                     Pair(eyr, "2020"),
                     Pair(hgt, "150cm"),
                     Pair(hcl, "#ffffff"),
-                    Pair(ecl, "1"),
+                    Pair(ecl, "amb"),
                     Pair(pid, "1")
                 )
             )
@@ -134,6 +134,15 @@ class Day4Test {
         assertThat(hcl.valid("#123456")).isTrue
         assertThat(hcl.valid("#abcdef")).isTrue
         assertThat(hcl.valid("#a2c5ef")).isTrue
+    }
+
+    @Test
+    fun `validate ecl`() {
+        assertThat(ecl.valid(null)).isFalse
+        assertThat(ecl.valid("123")).isFalse
+        assertThat(ecl.valid("ama")).isFalse
+        assertThat(ecl.valid("amb")).isTrue
+        assertThat(ecl.valid("blu")).isTrue
     }
 }
 

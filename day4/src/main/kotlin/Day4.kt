@@ -89,7 +89,14 @@ enum class Field {
             return value?.let { Regex("#[0-9a-f]{6}").matches(it) } ?: false
         }
     },
-    ecl, pid,
+    ecl {
+        override fun valid(value: String?): Boolean {
+            return value?.let {
+                listOf("amb", "blu", "brn", "gry", "grn", "hzl", "oth").contains(it)
+            } ?: false
+        }
+    },
+    pid,
 
     cid {
         override fun valid(value: String?): Boolean = true
