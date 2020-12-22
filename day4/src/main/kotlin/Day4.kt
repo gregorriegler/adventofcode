@@ -67,39 +67,24 @@ enum class Field {
         override fun valid(value: String?): Boolean = withinRange(value, 2020, 2030)
     },
     hgt {
-        override fun valid(value: String?): Boolean {
-            return when {
-                value == null -> {
-                    false
-                }
-                value.endsWith("cm") -> {
-                    (150..193).contains(value.removeSuffix("cm").toInt())
-                }
-                value.endsWith("in") -> {
-                    (59..76).contains(value.removeSuffix("in").toInt())
-                }
-                else -> {
-                    false
-                }
-            }
+        override fun valid(value: String?): Boolean = when {
+            value == null -> false
+            value.endsWith("cm") -> value.removeSuffix("cm").toInt() in (150..193)
+            value.endsWith("in") -> value.removeSuffix("in").toInt() in (59..76)
+            else -> false
         }
     },
     hcl {
-        override fun valid(value: String?): Boolean {
-            return value?.let { Regex("#[0-9a-f]{6}").matches(it) } ?: false
-        }
+        override fun valid(value: String?): Boolean = value?.let { Regex("#[0-9a-f]{6}").matches(it) } ?: false
     },
     ecl {
-        override fun valid(value: String?): Boolean {
-            return value?.let {
-                listOf("amb", "blu", "brn", "gry", "grn", "hzl", "oth").contains(it)
-            } ?: false
-        }
+        override fun valid(value: String?): Boolean = value?.let {
+            listOf("amb", "blu", "brn", "gry", "grn", "hzl", "oth").contains(it)
+        } ?: false
     },
     pid {
-        override fun valid(value: String?): Boolean {
-            return value?.let { it.length == 9 && Regex("[0]*[0-9]*").matches(it) } ?: false
-        }
+        override fun valid(value: String?): Boolean =
+            value?.let { it.length == 9 && Regex("[0]*[0-9]*").matches(it) } ?: false
     },
 
     cid {
@@ -109,5 +94,5 @@ enum class Field {
     open fun valid(value: String?): Boolean = value != null
 
     protected fun withinRange(value: String?, from: Int, to: Int) =
-        value?.let { (from..to).contains(it.toInt()) } ?: false
+        value?.let { it.toInt() in (from..to) } ?: false
 }
