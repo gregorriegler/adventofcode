@@ -44,21 +44,21 @@ class Day4Test {
     @Test
     fun scanPassportData() {
         assertThat(scanPassportData("ecl:gry")).isEqualTo(PassportData(Pair(ecl, "gry")))
-        assertThat(scanPassportData("byr:val")).isEqualTo(PassportData(Pair(byr, "val")))
-        assertThat(scanPassportData("ecl:gry byr:val")).isEqualTo(PassportData(Pair(ecl, "gry"), Pair(byr, "val")))
-        assertThat(scanPassportData("ecl:gry\nbyr:val")).isEqualTo(PassportData(Pair(ecl, "gry"), Pair(byr, "val")))
+        assertThat(scanPassportData("byr:1920")).isEqualTo(PassportData(Pair(byr, "1920")))
+        assertThat(scanPassportData("ecl:gry byr:1920")).isEqualTo(PassportData(Pair(ecl, "gry"), Pair(byr, "1920")))
+        assertThat(scanPassportData("ecl:gry\nbyr:1920")).isEqualTo(PassportData(Pair(ecl, "gry"), Pair(byr, "1920")))
     }
 
     @Test
     fun validatePassportData() {
         assertThat(valid(PassportData(Pair(ecl, "gry")))).isFalse
-        assertThat(valid(PassportData(Pair(ecl, "gry"), Pair(byr, "val")))).isFalse
+        assertThat(valid(PassportData(Pair(ecl, "gry"), Pair(byr, "1920")))).isFalse
         assertThat(
             valid(
                 PassportData(
-                    Pair(byr, "1"),
-                    Pair(iyr, "1"),
-                    Pair(eyr, "1"),
+                    Pair(byr, "1920"),
+                    Pair(iyr, "2010"),
+                    Pair(eyr, "2020"),
                     Pair(hgt, "1"),
                     Pair(hcl, "1"),
                     Pair(ecl, "1"),
@@ -70,9 +70,9 @@ class Day4Test {
         assertThat( // cid optional
             valid(
                 PassportData(
-                    Pair(byr, "1"),
-                    Pair(iyr, "1"),
-                    Pair(eyr, "1"),
+                    Pair(byr, "1920"),
+                    Pair(iyr, "2010"),
+                    Pair(eyr, "2020"),
                     Pair(hgt, "1"),
                     Pair(hcl, "1"),
                     Pair(ecl, "1"),
@@ -80,6 +80,36 @@ class Day4Test {
                 )
             )
         ).isTrue
+    }
+
+    @Test
+    fun `validate byr`() {
+        assertThat(byr.valid(null)).isFalse
+        assertThat(byr.valid("1")).isFalse
+        assertThat(byr.valid("1919")).isFalse
+        assertThat(byr.valid("1920")).isTrue
+        assertThat(byr.valid("2000")).isTrue
+        assertThat(byr.valid("2003")).isFalse
+    }
+
+    @Test
+    fun `validate iyr`() {
+        assertThat(iyr.valid(null)).isFalse
+        assertThat(iyr.valid("1")).isFalse
+        assertThat(iyr.valid("2009")).isFalse
+        assertThat(iyr.valid("2010")).isTrue
+        assertThat(iyr.valid("2020")).isTrue
+        assertThat(iyr.valid("2021")).isFalse
+    }
+
+    @Test
+    fun `validate eyr`() {
+        assertThat(eyr.valid(null)).isFalse
+        assertThat(eyr.valid("1")).isFalse
+        assertThat(eyr.valid("2019")).isFalse
+        assertThat(eyr.valid("2020")).isTrue
+        assertThat(eyr.valid("2030")).isTrue
+        assertThat(eyr.valid("2031")).isFalse
     }
 }
 

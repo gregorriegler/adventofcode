@@ -57,11 +57,21 @@ class PassportData(input: List<Pair<Field, String>>) {
 
 enum class Field {
 
-    byr, iyr, eyr, hgt, hcl, ecl, pid,
+    byr {
+        override fun valid(value: String?): Boolean = withinRange(value, 1920, 2002)
+    },
+    iyr {
+        override fun valid(value: String?): Boolean = withinRange(value, 2010, 2020)
+    },
+    eyr{
+        override fun valid(value: String?): Boolean = withinRange(value, 2020, 2030)
+    }, hgt, hcl, ecl, pid,
 
     cid {
         override fun valid(value: String?): Boolean = true
     };
 
     open fun valid(value: String?): Boolean = value != null
+
+    protected fun withinRange(value: String?, from: Int, to: Int) = value?.let { (from..to).contains(it.toInt()) } ?: false
 }
