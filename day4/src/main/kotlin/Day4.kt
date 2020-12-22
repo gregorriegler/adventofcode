@@ -51,8 +51,6 @@ class PassportData(input: List<Pair<Field, String>>) {
     override fun hashCode(): Int {
         return value.hashCode()
     }
-
-
 }
 
 enum class Field {
@@ -93,6 +91,5 @@ enum class Field {
 
     open fun valid(value: String?): Boolean = value != null
 
-    protected fun withinRange(value: String?, from: Int, to: Int) =
-        value?.let { it.toInt() in (from..to) } ?: false
+    protected fun withinRange(value: String?, from: Int, to: Int): Boolean = value?.toInt() in (from..to)
 }
