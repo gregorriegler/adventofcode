@@ -42,6 +42,11 @@ class Day4Test {
         assertThat(splitByEmptyLine("a\n \nb c\n\nd")).isEqualTo(listOf("a", "b c", "d"))
     }
 
+    @Test
+    fun scanPassportData() {
+        assertThat(scanPassportData("ecl:gry").value).isEqualTo(mapOf(Pair(Field.ecl, "gry")))
+    }
+
 
 }
 
@@ -56,12 +61,27 @@ fun splitByEmptyLine(input: String): List<String> = input.split(Regex("\n[\\s]*\
     .map { it.trim() }
     .filter { it.isNotEmpty() }
 
-fun valid(passport: PassportData): Boolean = true
-
 fun scanPassportData(input: String): PassportData {
-    TODO("Not yet implemented")
+    return input.split(Regex("[\\s]+"))
+        .map { it.trim() }
+        .filter { it.isNotEmpty() }
+        .map { parsePair(it) }
+        .toMap()
+        .let { PassportData(it) }
 }
 
-class PassportData(
+fun parsePair(input: String): Pair<Field, String> {
+    return input.split(":")
+        .map { it.trim() }
+        .let { Pair(Field.valueOf(it[0]), it[1]) }
+//    return Pair(Field.ECL, "gry")
+}
 
+fun valid(passport: PassportData): Boolean = true
+
+
+class PassportData(
+    val value: Map<Field, String>
 )
+
+enum class Field { ecl }
