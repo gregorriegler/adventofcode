@@ -1,3 +1,5 @@
+import Field.byr
+import Field.ecl
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -44,7 +46,10 @@ class Day4Test {
 
     @Test
     fun scanPassportData() {
-        assertThat(scanPassportData("ecl:gry").value).isEqualTo(mapOf(Pair(Field.ecl, "gry")))
+        assertThat(scanPassportData("ecl:gry").value).isEqualTo(mapOf(Pair(ecl, "gry")))
+        assertThat(scanPassportData("byr:val").value).isEqualTo(mapOf(Pair(byr, "val")))
+        assertThat(scanPassportData("ecl:gry byr:val").value).isEqualTo(mapOf(Pair(ecl, "gry"), Pair(byr, "val")))
+        assertThat(scanPassportData("ecl:gry\nbyr:val").value).isEqualTo(mapOf(Pair(ecl, "gry"), Pair(byr, "val")))
     }
 
 
@@ -74,7 +79,6 @@ fun parsePair(input: String): Pair<Field, String> {
     return input.split(":")
         .map { it.trim() }
         .let { Pair(Field.valueOf(it[0]), it[1]) }
-//    return Pair(Field.ECL, "gry")
 }
 
 fun valid(passport: PassportData): Boolean = true
@@ -84,4 +88,4 @@ class PassportData(
     val value: Map<Field, String>
 )
 
-enum class Field { ecl }
+enum class Field { byr, iyr, eyr, hgt, hcl, ecl, pid, cid }
