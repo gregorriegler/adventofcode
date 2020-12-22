@@ -96,7 +96,11 @@ enum class Field {
             } ?: false
         }
     },
-    pid,
+    pid {
+        override fun valid(value: String?): Boolean {
+            return value?.let { it.length == 9 && Regex("[0]*[0-9]*").matches(it) } ?: false
+        }
+    },
 
     cid {
         override fun valid(value: String?): Boolean = true

@@ -62,7 +62,7 @@ class Day4Test {
                     Pair(hgt, "150cm"),
                     Pair(hcl, "#ffffff"),
                     Pair(ecl, "amb"),
-                    Pair(pid, "1"),
+                    Pair(pid, "111111111"),
                     Pair(cid, "1"),
                 )
             )
@@ -76,7 +76,7 @@ class Day4Test {
                     Pair(hgt, "150cm"),
                     Pair(hcl, "#ffffff"),
                     Pair(ecl, "amb"),
-                    Pair(pid, "1")
+                    Pair(pid, "111111111")
                 )
             )
         ).isTrue
@@ -115,6 +115,7 @@ class Day4Test {
     @Test
     fun `validate hgt`() {
         assertThat(hgt.valid(null)).isFalse
+        assertThat(hgt.valid("149")).isFalse
         assertThat(hgt.valid("149cm")).isFalse
         assertThat(hgt.valid("150cm")).isTrue
         assertThat(hgt.valid("193cm")).isTrue
@@ -143,6 +144,16 @@ class Day4Test {
         assertThat(ecl.valid("ama")).isFalse
         assertThat(ecl.valid("amb")).isTrue
         assertThat(ecl.valid("blu")).isTrue
+    }
+
+    @Test
+    fun `validate pid`() {
+        assertThat(pid.valid(null)).isFalse
+        assertThat(pid.valid("0123456789")).isFalse
+        assertThat(pid.valid("000000000")).isTrue
+        assertThat(pid.valid("000000001")).isTrue
+        assertThat(pid.valid("000321321")).isTrue
+        assertThat(pid.valid("521321321")).isTrue
     }
 }
 
