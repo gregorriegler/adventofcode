@@ -1,5 +1,4 @@
-import Field.byr
-import Field.ecl
+import Field.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -46,13 +45,31 @@ class Day4Test {
 
     @Test
     fun scanPassportData() {
-        assertThat(scanPassportData("ecl:gry").value).isEqualTo(mapOf(Pair(ecl, "gry")))
-        assertThat(scanPassportData("byr:val").value).isEqualTo(mapOf(Pair(byr, "val")))
-        assertThat(scanPassportData("ecl:gry byr:val").value).isEqualTo(mapOf(Pair(ecl, "gry"), Pair(byr, "val")))
-        assertThat(scanPassportData("ecl:gry\nbyr:val").value).isEqualTo(mapOf(Pair(ecl, "gry"), Pair(byr, "val")))
+        assertThat(scanPassportData("ecl:gry")).isEqualTo(PassportData(Pair(ecl, "gry")))
+        assertThat(scanPassportData("byr:val")).isEqualTo(PassportData(Pair(byr, "val")))
+        assertThat(scanPassportData("ecl:gry byr:val")).isEqualTo(PassportData(Pair(ecl, "gry"), Pair(byr, "val")))
+        assertThat(scanPassportData("ecl:gry\nbyr:val")).isEqualTo(PassportData(Pair(ecl, "gry"), Pair(byr, "val")))
     }
 
-
+    @Test
+    fun validatePassportData() {
+        assertThat(valid(PassportData(Pair(ecl, "gry")))).isFalse
+        assertThat(valid(PassportData(Pair(ecl, "gry"), Pair(byr, "val")))).isFalse
+        assertThat(
+            valid(
+                PassportData(
+                    Pair(byr, "1"),
+                    Pair(iyr, "1"),
+                    Pair(eyr, "1"),
+                    Pair(hgt, "1"),
+                    Pair(hcl, "1"),
+                    Pair(ecl, "1"),
+                    Pair(pid, "1"),
+                    Pair(cid, "1"),
+                )
+            )
+        ).isTrue
+    }
 }
 
 fun day4(input: String): Int {
@@ -71,7 +88,6 @@ fun scanPassportData(input: String): PassportData {
         .map { it.trim() }
         .filter { it.isNotEmpty() }
         .map { parsePair(it) }
-        .toMap()
         .let { PassportData(it) }
 }
 
@@ -81,11 +97,38 @@ fun parsePair(input: String): Pair<Field, String> {
         .let { Pair(Field.valueOf(it[0]), it[1]) }
 }
 
-fun valid(passport: PassportData): Boolean = true
+fun valid(passport: PassportData): Boolean =
+    Field.values().all { it.valid(passport.value[it]) }
 
 
-class PassportData(
-    val value: Map<Field, String>
-)
+class PassportData(input: List<Pair<Field, String>>) {
+    constructor(vararg input: Pair<Field, String>) : this(input.toList())
 
-enum class Field { byr, iyr, eyr, hgt, hcl, ecl, pid, cid }
+    val value: Map<Field, String> = input.toMap()
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as PassportData
+
+        if (value != other.value) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
+    }
+
+
+}
+
+enum class Field {
+
+    byr, iyr, eyr, hgt, hcl, ecl, pid, cid;
+
+    fun valid(value: String?): Boolean {
+        return value != null
+    }
+}
