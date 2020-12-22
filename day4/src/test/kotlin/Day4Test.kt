@@ -69,6 +69,19 @@ class Day4Test {
                 )
             )
         ).isTrue
+        assertThat( // cid optional
+            valid(
+                PassportData(
+                    Pair(byr, "1"),
+                    Pair(iyr, "1"),
+                    Pair(eyr, "1"),
+                    Pair(hgt, "1"),
+                    Pair(hcl, "1"),
+                    Pair(ecl, "1"),
+                    Pair(pid, "1")
+                )
+            )
+        ).isTrue
     }
 }
 
@@ -126,9 +139,11 @@ class PassportData(input: List<Pair<Field, String>>) {
 
 enum class Field {
 
-    byr, iyr, eyr, hgt, hcl, ecl, pid, cid;
+    byr, iyr, eyr, hgt, hcl, ecl, pid,
 
-    fun valid(value: String?): Boolean {
-        return value != null
-    }
+    cid {
+        override fun valid(value: String?): Boolean = true
+    };
+
+    open fun valid(value: String?): Boolean = value != null
 }
