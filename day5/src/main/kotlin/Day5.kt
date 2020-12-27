@@ -5,7 +5,9 @@ fun main() {
 }
 
 fun day5(input: String): Int {
-    return 1
+    return input.lines()
+        .map { seatId(it) }
+        .maxOrNull()!!
 }
 
 fun seatId(seat: String): Int {
