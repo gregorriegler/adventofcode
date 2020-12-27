@@ -35,16 +35,16 @@ class Day5Test {
 
     @Test
     fun `test lower half rows`() {
-        assertThat(Half.of('F').take(0..3)).isEqualTo(0..1)
-        assertThat(Half.of('F').take(0..127)).isEqualTo(0..63)
-        assertThat(Half.of('F').take(32..63)).isEqualTo(32..47)
+        assertThat(FrontBack.of('F').take(0..3)).isEqualTo(0..1)
+        assertThat(FrontBack.of('F').take(0..127)).isEqualTo(0..63)
+        assertThat(FrontBack.of('F').take(32..63)).isEqualTo(32..47)
     }
 
     @Test
     fun `test upper half rows`() {
-        assertThat(Half.of('B').take(0..3)).isEqualTo(2..3)
-        assertThat(Half.of('B').take(0..127)).isEqualTo(64..127)
-        assertThat(Half.of('B').take(32..47)).isEqualTo(40..47)
+        assertThat(FrontBack.of('B').take(0..3)).isEqualTo(2..3)
+        assertThat(FrontBack.of('B').take(0..127)).isEqualTo(64..127)
+        assertThat(FrontBack.of('B').take(32..47)).isEqualTo(40..47)
     }
 
     @Test
@@ -54,7 +54,6 @@ class Day5Test {
         assertThat(column("RRR")).isEqualTo(7)
         assertThat(column("RLL")).isEqualTo(4)
     }
-
 }
 
 fun seatId(seat: String): Int {
@@ -64,7 +63,7 @@ fun seatId(seat: String): Int {
 }
 
 fun row(rowInput: String): Int {
-    return rowInput.map { Half.of(it) }
+    return rowInput.map { FrontBack.of(it) }
         .fold(0..127) { range, half -> half.take(range) }
         .first
 }
@@ -73,29 +72,33 @@ fun column(columnInput: String): Int {
     TODO("Not yet implemented")
 }
 
-enum class Half {
-    Lower {
-        override fun take(range: IntRange): IntRange {
-            return range.first until range.elementAt(range.count() / 2)
-        }
-    },
-    Upper {
-        override fun take(range: IntRange): IntRange {
-            return range.elementAt(range.count() / 2) .. range.last
-        }
-    };
+enum class FrontBack(private val half: Half) {
 
-    abstract fun take(range: IntRange): IntRange
+    F(Half.Lower),
+    B(Half.Upper);
+
+    fun take(range: IntRange) = half.take(range)
 
     companion object {
-        fun of(input: Char): Half {
+        fun of(input: Char): FrontBack {
             return when (input) {
-                'F' -> Lower
-                'B' -> Upper
+                'F' -> F
+                'B' -> B
                 else -> throw IllegalArgumentException("only F or B allowed")
             }
         }
     }
+}
+
+enum class Half {
+    Lower {
+        override fun take(range: IntRange) = range.first until range.elementAt(range.count() / 2)
+    },
+    Upper {
+        override fun take(range: IntRange) = range.elementAt(range.count() / 2)..range.last
+    };
+
+    abstract fun take(range: IntRange): IntRange
 }
 
 
