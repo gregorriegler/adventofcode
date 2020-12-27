@@ -2,13 +2,21 @@ import java.io.File
 
 fun main() {
     println(day5(File("day5/input").readText()))
+    println(day5pt2(File("day5/input").readText()))
 }
 
 fun day5(input: String): Int {
-    return input.lines()
-        .map { seatId(it) }
-        .maxOrNull()!!
+    return seats(input).maxOrNull()!!
 }
+
+fun day5pt2(input: String): Int {
+    val seats = seats(input)
+    return IntRange(seats.minOrNull()!!, seats.maxOrNull()!!)
+        .firstOrNull { it !in seats }!!
+}
+
+fun seats(input: String) = input.lines()
+    .map { seatId(it) }
 
 fun seatId(seat: String): Int {
     val row = row(seat.take(7))
