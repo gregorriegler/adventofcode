@@ -27,7 +27,6 @@ class Day5Test {
     }
 
     @Test
-    @Disabled
     fun `test row`() {
         assertThat(row("BFFFBBF")).isEqualTo(70)
         assertThat(row("FFFBBBF")).isEqualTo(14)
