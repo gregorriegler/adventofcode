@@ -11,9 +11,9 @@ fun day5(input: String): Int {
 }
 
 fun seatId(seat: String): Int {
-    val rowId = row(seat.take(6))
-    val columnId = column(seat.substring(7))
-    return rowId * 8 + columnId
+    val row = row(seat.take(6))
+    val column = column(seat.substring(7))
+    return row * 8 + column
 }
 
 fun row(rowInput: String): Int {
@@ -29,38 +29,24 @@ fun column(columnInput: String): Int {
 }
 
 enum class FrontOrBack(private val half: Half) {
-
     F(Half.Lower),
     B(Half.Upper);
 
     fun take(range: IntRange) = half.take(range)
 
     companion object {
-        fun of(input: Char): FrontOrBack {
-            return when (input) {
-                'F' -> F
-                'B' -> B
-                else -> throw IllegalArgumentException("only F or B allowed")
-            }
-        }
+        fun of(input: Char): FrontOrBack = valueOf(input.toString())
     }
 }
 
 enum class LeftOrRight(private val half: Half) {
-
     L(Half.Lower),
     R(Half.Upper);
 
     fun take(range: IntRange) = half.take(range)
 
     companion object {
-        fun of(input: Char): LeftOrRight {
-            return when (input) {
-                'L' -> L
-                'R' -> R
-                else -> throw IllegalArgumentException("only L or R allowed")
-            }
-        }
+        fun of(input: Char): LeftOrRight = valueOf(input.toString())
     }
 }
 
