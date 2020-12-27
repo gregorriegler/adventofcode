@@ -19,7 +19,6 @@ class Day5Test {
     }
 
     @Test
-    @Disabled
     fun `test seatId`() {
         assertThat(seatId("BFFFBBFRRR")).isEqualTo(567)
         assertThat(seatId("FFFBBBFRRR")).isEqualTo(119)
@@ -57,8 +56,8 @@ class Day5Test {
 
 fun seatId(seat: String): Int {
     val rowId = row(seat.take(6))
-    val columnId = column(seat.substring(6))
-    return rowId * columnId
+    val columnId = column(seat.substring(7))
+    return rowId * 8 + columnId
 }
 
 fun row(rowInput: String): Int {
