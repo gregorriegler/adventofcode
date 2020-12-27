@@ -47,6 +47,14 @@ class Day5Test {
         assertThat(Half.of('B').take(32..47)).isEqualTo(40..47)
     }
 
+    @Test
+    @Disabled
+    fun `test column`() {
+        assertThat(column("RLR")).isEqualTo(5)
+        assertThat(column("RRR")).isEqualTo(7)
+        assertThat(column("RLL")).isEqualTo(4)
+    }
+
 }
 
 fun seatId(seat: String): Int {
