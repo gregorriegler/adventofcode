@@ -11,7 +11,7 @@ fun day5(input: String): Int {
 }
 
 fun seatId(seat: String): Int {
-    val row = row(seat.take(6))
+    val row = row(seat.take(7))
     val column = column(seat.substring(7))
     return row * 8 + column
 }
@@ -24,7 +24,7 @@ fun row(rowInput: String): Int {
 
 fun column(columnInput: String): Int {
     return columnInput.map { LeftOrRight.of(it) }
-        .fold(0..8) { range, leftOrRight -> leftOrRight.take(range) }
+        .fold(0..7) { range, leftOrRight -> leftOrRight.take(range) }
         .first
 }
 

@@ -18,16 +18,34 @@ class Day5Test {
 
     @Test
     fun `test seatId`() {
+        assertThat(seatId("FFFFFFFLLL")).isEqualTo(0)
+        assertThat(seatId("BBBBBBBRRR")).isEqualTo(1015)
         assertThat(seatId("BFFFBBFRRR")).isEqualTo(567)
         assertThat(seatId("FFFBBBFRRR")).isEqualTo(119)
         assertThat(seatId("BBFFBBFRLL")).isEqualTo(820)
+        assertThat(seatId("FFFFBBBLRR")).isEqualTo(51)
+        assertThat(seatId("BBFBBFBLRL")).isEqualTo(874)
+
     }
 
     @Test
     fun `test row`() {
+        assertThat(row("FFFFFFF")).isEqualTo(0)
+        assertThat(row("BBBBBBB")).isEqualTo(127)
         assertThat(row("BFFFBBF")).isEqualTo(70)
         assertThat(row("FFFBBBF")).isEqualTo(14)
         assertThat(row("BBFFBBF")).isEqualTo(102)
+        assertThat(row("BBFBBFB")).isEqualTo(109)
+    }
+
+    @Test
+    fun `test column`() {
+        assertThat(column("LLL")).isEqualTo(0)
+        assertThat(column("RRR")).isEqualTo(7)
+        assertThat(column("LLR")).isEqualTo(1)
+        assertThat(column("RLR")).isEqualTo(5)
+        assertThat(column("RLL")).isEqualTo(4)
+        assertThat(column("LRL")).isEqualTo(2)
     }
 
     @Test
@@ -42,13 +60,6 @@ class Day5Test {
         assertThat(FrontOrBack.of('B').take(0..3)).isEqualTo(2..3)
         assertThat(FrontOrBack.of('B').take(0..127)).isEqualTo(64..127)
         assertThat(FrontOrBack.of('B').take(32..47)).isEqualTo(40..47)
-    }
-
-    @Test
-    fun `test column`() {
-        assertThat(column("RLR")).isEqualTo(5)
-        assertThat(column("RRR")).isEqualTo(7)
-        assertThat(column("RLL")).isEqualTo(4)
     }
 }
 
