@@ -38,12 +38,14 @@ class Day5Test {
     fun `test lower half rows`() {
         assertThat(Half.of('F').take(0..3)).isEqualTo(0..1)
         assertThat(Half.of('F').take(0..127)).isEqualTo(0..63)
+        assertThat(Half.of('F').take(32..63)).isEqualTo(32..47)
     }
 
     @Test
     fun `test upper half rows`() {
         assertThat(Half.of('B').take(0..3)).isEqualTo(2..3)
         assertThat(Half.of('B').take(0..127)).isEqualTo(64..127)
+        assertThat(Half.of('B').take(32..47)).isEqualTo(40..47)
     }
 
 }
@@ -67,12 +69,12 @@ fun column(columnInput: String): Int {
 enum class Half {
     Lower {
         override fun take(range: IntRange): IntRange {
-            return range.first until range.count() / 2
+            return range.first until range.elementAt(range.count() / 2)
         }
     },
     Upper {
         override fun take(range: IntRange): IntRange {
-            return range.count() / 2 .. range.last
+            return range.elementAt(range.count() / 2) .. range.last
         }
     };
 
