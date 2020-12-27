@@ -35,20 +35,19 @@ class Day5Test {
 
     @Test
     fun `test lower half rows`() {
-        assertThat(FrontBack.of('F').take(0..3)).isEqualTo(0..1)
-        assertThat(FrontBack.of('F').take(0..127)).isEqualTo(0..63)
-        assertThat(FrontBack.of('F').take(32..63)).isEqualTo(32..47)
+        assertThat(FrontOrBack.of('F').take(0..3)).isEqualTo(0..1)
+        assertThat(FrontOrBack.of('F').take(0..127)).isEqualTo(0..63)
+        assertThat(FrontOrBack.of('F').take(32..63)).isEqualTo(32..47)
     }
 
     @Test
     fun `test upper half rows`() {
-        assertThat(FrontBack.of('B').take(0..3)).isEqualTo(2..3)
-        assertThat(FrontBack.of('B').take(0..127)).isEqualTo(64..127)
-        assertThat(FrontBack.of('B').take(32..47)).isEqualTo(40..47)
+        assertThat(FrontOrBack.of('B').take(0..3)).isEqualTo(2..3)
+        assertThat(FrontOrBack.of('B').take(0..127)).isEqualTo(64..127)
+        assertThat(FrontOrBack.of('B').take(32..47)).isEqualTo(40..47)
     }
 
     @Test
-    @Disabled
     fun `test column`() {
         assertThat(column("RLR")).isEqualTo(5)
         assertThat(column("RRR")).isEqualTo(7)
@@ -63,16 +62,18 @@ fun seatId(seat: String): Int {
 }
 
 fun row(rowInput: String): Int {
-    return rowInput.map { FrontBack.of(it) }
-        .fold(0..127) { range, half -> half.take(range) }
+    return rowInput.map { FrontOrBack.of(it) }
+        .fold(0..127) { range, frontOrBack -> frontOrBack.take(range) }
         .first
 }
 
 fun column(columnInput: String): Int {
-    TODO("Not yet implemented")
+    return columnInput.map { LeftOrRight.of(it) }
+        .fold(0..8) { range, leftOrRight -> leftOrRight.take(range) }
+        .first
 }
 
-enum class FrontBack(private val half: Half) {
+enum class FrontOrBack(private val half: Half) {
 
     F(Half.Lower),
     B(Half.Upper);
@@ -80,11 +81,29 @@ enum class FrontBack(private val half: Half) {
     fun take(range: IntRange) = half.take(range)
 
     companion object {
-        fun of(input: Char): FrontBack {
+        fun of(input: Char): FrontOrBack {
             return when (input) {
                 'F' -> F
                 'B' -> B
                 else -> throw IllegalArgumentException("only F or B allowed")
+            }
+        }
+    }
+}
+
+enum class LeftOrRight(private val half: Half) {
+
+    L(Half.Lower),
+    R(Half.Upper);
+
+    fun take(range: IntRange) = half.take(range)
+
+    companion object {
+        fun of(input: Char): LeftOrRight {
+            return when (input) {
+                'L' -> L
+                'R' -> R
+                else -> throw IllegalArgumentException("only L or R allowed")
             }
         }
     }
