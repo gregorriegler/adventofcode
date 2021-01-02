@@ -7,24 +7,18 @@ fun main() {
 
 fun day6(input: String): Int {
     return input.split("\n\n")
-        .asSequence()
         .map { it.distinctChars() }
         .sumBy { it.size }
 }
 
 fun day6part2(input: String): Int {
     return input.split("\n\n")
-        .asSequence()
-        .map { Pair(
-            it.distinctChars(),
-            it.split('\n')
-            )}
-        .map { pair -> pair.first
-            .stream()
-            .filter{char -> pair.second.all { it.contains(char) }}
-            .count()
+        .map { block ->
+            block.distinctChars()
+                .filter { char -> block.lines().all { it.contains(char) } }
+                .count()
         }
-        .sum().toInt()
+        .sum()
 
 }
 
