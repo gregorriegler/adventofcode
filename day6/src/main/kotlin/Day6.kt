@@ -16,9 +16,8 @@ fun day6part2(input: String): Int {
         .map { block ->
             block.distinctChars()
                 .filter { char -> block.lines().all { it.contains(char) } }
-                .count()
         }
-        .sum()
+        .sumBy { it.size }
 
 }
 
