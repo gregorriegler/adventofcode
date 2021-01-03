@@ -2,6 +2,7 @@ import java.io.File
 
 fun main() {
     println(day7(File("day7/input").readText()))
+    println(day7part2(File("day7/input").readText()))
 }
 
 fun day7(input: String): Int {
@@ -11,9 +12,22 @@ fun day7(input: String): Int {
     ).count()
 }
 
+fun day7part2(input: String): Int {
+    return childCountsRecursively(
+        "shiny gold",
+        input.lines().map { it.toRule() }
+    )
+}
+
 fun parentsRecursively(bag: String, rules: List<LuggageRule>): Set<String> {
     val parents = rules.filter { it.hasContainingBag(bag) }.map { it.bag }.toSet()
     return parents + parents.flatMap { parentsRecursively(it, rules) }
+}
+
+fun childCountsRecursively(bag: String, rules: List<LuggageRule>): Int {
+    return rules.filter { it.bag == bag }
+        .flatMap { it.containingBags.entries }
+        .sumBy { it.value + it.value * childCountsRecursively(it.key, rules) }
 }
 
 fun String.toRule() = LuggageRule.of(this)

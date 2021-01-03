@@ -19,6 +19,7 @@ class Day7Test {
     @Test
     fun acceptance() {
         assertThat(day7(this.input)).isEqualTo(4)
+        assertThat(day7part2(this.input)).isEqualTo(32)
     }
 
     @Test
@@ -89,7 +90,74 @@ class Day7Test {
                 )
             )
         ).containsExactly("light red", "muted yellow")
-
-
     }
+
+    @Test
+    fun childCountsRecursively() {
+        assertThat(childCountsRecursively("bag", emptyList())).isEqualTo(0)
+
+        assertThat(
+            childCountsRecursively(
+                "bag", listOf(
+                    LuggageRule("bag", mapOf(Pair("bright white", 1)))
+                )
+            )
+        ).isEqualTo(1)
+
+        assertThat(
+            childCountsRecursively(
+                "bag", listOf(
+                    LuggageRule("bag", mapOf(Pair("bright white", 2)))
+                )
+            )
+        ).isEqualTo(2)
+
+        assertThat(
+            childCountsRecursively(
+                "bag", listOf(
+                    LuggageRule("bag", mapOf(Pair("bright white", 2))),
+                    LuggageRule("bag", mapOf(Pair("bright black", 2)))
+                )
+            )
+        ).isEqualTo(4)
+
+        assertThat(
+            childCountsRecursively(
+                "bag", listOf(
+                    LuggageRule("bag", mapOf(Pair("bright white", 1))),
+                    LuggageRule("bright white", mapOf(Pair("bright black", 2)))
+                )
+            )
+        ).isEqualTo(3)
+
+        assertThat(
+            childCountsRecursively(
+                "bag", listOf(
+                    LuggageRule("bag", mapOf(Pair("bright white", 3))),
+                    LuggageRule("bright white", emptyMap())
+                )
+            )
+        ).isEqualTo(3)
+
+        assertThat(
+            childCountsRecursively(
+                "bag", listOf(
+                    LuggageRule("bag", mapOf(Pair("bright white", 2))),
+                    LuggageRule("bright white", mapOf(Pair("bright black", 2))),
+                    LuggageRule("bright black", emptyMap())
+                )
+            )
+        ).isEqualTo(6)
+
+        assertThat(
+            childCountsRecursively(
+                "bag", listOf(
+                    LuggageRule("bag", mapOf(Pair("bright white", 1))),
+                    LuggageRule("bright white", mapOf(Pair("bright black", 7))),
+                    LuggageRule("bright black", emptyMap())
+                )
+            )
+        ).isEqualTo(8)
+    }
+
 }
