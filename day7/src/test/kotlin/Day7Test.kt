@@ -17,7 +17,6 @@ class Day7Test {
                 """.trimIndent()
 
     @Test
-    @Disabled
     fun acceptance() {
         assertThat(day7(this.input)).isEqualTo(4)
     }
@@ -37,9 +36,60 @@ class Day7Test {
             .isEqualTo(LuggageRule("faded blue", mapOf(Pair("dotted black", 3))))
 
         assertThat("light red bags contain 1 bright white bag, 2 muted yellow bags.".toRule())
-            .isEqualTo(LuggageRule("light red", mapOf(
+            .isEqualTo(
+                LuggageRule(
+                    "light red", mapOf(
+                        Pair("bright white", 1),
+                        Pair("muted yellow", 2),
+                    )
+                )
+            )
+    }
+
+    @Test
+    fun hasContainingBag() {
+        val rule = LuggageRule(
+            "light red", mapOf(
                 Pair("bright white", 1),
                 Pair("muted yellow", 2),
-            )))
+            )
+        )
+
+        assertThat(rule.hasContainingBag("not containing")).isFalse
+        assertThat(rule.hasContainingBag("bright white")).isTrue
+        assertThat(rule.hasContainingBag("muted yellow")).isTrue
+    }
+
+    @Test
+    fun parentsRecursively() {
+        assertThat(parentsRecursively("bag", emptyList())).isEmpty()
+
+        assertThat(
+            parentsRecursively(
+                "bright white", listOf(
+                    LuggageRule("light red", mapOf(Pair("bright white", 1)))
+                )
+            )
+        ).containsExactly("light red")
+
+        assertThat(
+            parentsRecursively(
+                "bright white", listOf(
+                    LuggageRule("light red", mapOf(Pair("bright white", 1))),
+                    LuggageRule("muted yellow", mapOf(Pair("bright white", 2)))
+                )
+            )
+        ).containsExactly("light red", "muted yellow")
+
+        assertThat(
+            parentsRecursively(
+                "bright white", listOf(
+                    LuggageRule("light red", mapOf(Pair("bright white", 1))),
+                    LuggageRule("muted yellow", mapOf(Pair("light red", 2)))
+                )
+            )
+        ).containsExactly("light red", "muted yellow")
+
+
     }
 }
