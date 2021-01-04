@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 
 class Day8Test {
 
-    private val program = """
+    private val code = """
             nop +0
             acc +1
             jmp +4
@@ -17,9 +17,8 @@ class Day8Test {
         """.trimIndent()
 
     @Test
-    @Disabled
     fun acceptance() {
-        val result: Int = day8(program)
+        val result: Int = day8(code)
 
         assertThat(result).isEqualTo(5)
     }
