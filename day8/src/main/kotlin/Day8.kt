@@ -13,7 +13,7 @@ class Program(val lines: List<String>) {
     fun run(interrupt: Interrupt = NoInterrupt()): Int {
         if (lines.isEmpty()) return 0
         if(lines[0].startsWith("acc")) {
-            return 1
+            return lines[0].substringAfter(' ').toInt()
         }
         return 0
     }

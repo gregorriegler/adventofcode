@@ -1,6 +1,9 @@
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
+
 
 class Day8Test {
 
@@ -24,18 +27,16 @@ class Day8Test {
         assertThat(result).isEqualTo(5)
     }
 
-    @Test
-    fun `program starts with acc 0`() {
-        assertThat(Program(emptyList()).run()).isEqualTo(0)
-    }
-
-    @Test
-    fun `program increments acc`() {
-        assertThat(Program(listOf("acc +1")).run()).isEqualTo(1)
-    }
-
-    @Test
-    fun `program executes a nop instruction`() {
-        assertThat(Program(listOf("nop +0")).run()).isEqualTo(0)
-    }
+    @TestFactory
+    fun program() = listOf(
+        Triple("starts at 0", emptyList(), 0),
+        Triple("nop does nothing", listOf("nop +0"), 0),
+        Triple("increments acc", listOf("acc +1"), 1),
+        Triple("increments acc by 2", listOf("acc +2"), 2),
+    )
+        .map { (description, lines, expectedAcc) ->
+            DynamicTest.dynamicTest(description) {
+                assertThat(Program(lines).run()).isEqualTo(expectedAcc)
+            }
+        }
 }
