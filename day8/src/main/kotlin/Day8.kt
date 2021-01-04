@@ -2,10 +2,45 @@ import java.io.File
 
 fun main() {
     println(day8(File("day8/input").readText()))
+    println(day8part2(File("day8/input").readText()))
 }
 
 fun day8(code: String): Int {
     return Program(code.lines(), InterruptTerminateBeforeSecondExecution()).run().value
+}
+
+fun day8part2(code: String): Int {
+    val alterations = Alterations(code.lines())
+    alterations.get().forEach {
+        val result = Program(it, InterruptTerminateBeforeSecondExecution()).run()
+        if (result is Success) return result.value
+    }
+    return -1
+}
+
+class Alterations(
+    private val lines: List<String>
+) {
+    fun get(): List<List<String>> {
+        val toggleIndexes = lines.withIndex()
+            .filter { it.value.startsWith("jmp") || it.value.startsWith("nop") }
+            .map { it.index }
+
+        return toggleIndexes.map { toggleAt(lines, it) }
+    }
+
+    private fun toggleAt(lines: List<String>, toggleIndex: Int): List<String> {
+        return lines.mapIndexed { index, line -> if (index == toggleIndex) toggle(line) else line }
+            .toList()
+    }
+
+    private fun toggle(instruction: String): String {
+        return if (instruction.startsWith("jmp")) {
+            "nop" + instruction.drop(3)
+        } else {
+            "jmp" + instruction.drop(3)
+        }
+    }
 }
 
 class Program(
