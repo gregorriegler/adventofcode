@@ -34,6 +34,8 @@ class Day8Test {
         Triple("increments acc by 2", listOf("acc +2"), 2),
         Triple("handles many instructions", listOf("acc +1", "acc +1"), 2),
         Triple("nop does nothing", listOf("nop +0", "acc +1"), 1),
+        Triple("jump +1 does nothing", listOf("jmp +1", "acc +1"), 1),
+//        Triple("jumps forward", listOf("jmp +2", "acc +3", "acc +1"), 1),
     )
         .map { (description, lines, expectedAcc) ->
             DynamicTest.dynamicTest(description) {
