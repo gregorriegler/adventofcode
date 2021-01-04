@@ -1,5 +1,4 @@
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
@@ -39,7 +38,7 @@ class Day8Test {
     )
         .map { (description, lines, expectedAcc) ->
             DynamicTest.dynamicTest(description) {
-                assertThat(Program(lines).run()).isEqualTo(expectedAcc)
+                assertThat(Program(lines).run()).isEqualTo(Success(expectedAcc))
             }
         }
 
@@ -56,7 +55,7 @@ class Day8Test {
         val stopper = Stopper()
         val acc = Program(listOf("acc +3", "acc +1", "nop +0"), stopper).run()
 
-        assertThat(acc).isEqualTo(0)
+        assertThat(acc).isEqualTo(Error(0))
     }
 
 }

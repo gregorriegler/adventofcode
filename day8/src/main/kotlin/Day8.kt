@@ -5,7 +5,7 @@ fun main() {
 }
 
 fun day8(code: String): Int {
-    return Program(code.lines(), InterruptTerminateBeforeSecondExecution()).run()
+    return Program(code.lines(), InterruptTerminateBeforeSecondExecution()).run().value
 }
 
 class Program(
@@ -15,16 +15,19 @@ class Program(
 
     private var acc = 0
 
-    fun run(): Int {
-        executeLine(0)
-        return acc
+    fun run(): Result<Int> {
+        return if (executeLine(0) is Success) {
+            Success(acc)
+        } else {
+            Error(acc)
+        }
     }
 
-    private fun executeLine(number: Int) {
-        if (number >= lines.size) return
-        if (!interrupt.continueProgram(number)) return
+    private fun executeLine(number: Int): Result<Unit> {
+        if (number >= lines.size) return Success(Unit)
+        if (!interrupt.continueProgram(number)) return Error(Unit)
 
-        executeLine(instruction(lines[number], number))
+        return executeLine(instruction(lines[number], number))
     }
 
     private fun instruction(instruction: String, number: Int): Int {
@@ -72,3 +75,7 @@ class InterruptTerminateBeforeSecondExecution : Interrupt {
         }
     }
 }
+
+open class Result<T>(open val value: T)
+data class Success<T>(override val value: T) : Result<T>(value)
+data class Error<T>(override val value: T) : Result<T>(value)
