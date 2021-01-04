@@ -5,7 +5,7 @@ fun main() {
 }
 
 fun day8(code: String): Int {
-    return Program(code.lines(), InterruptStopBeforeSecondExecution()).run()
+    return Program(code.lines(), InterruptTerminateBeforeSecondExecution()).run()
 }
 
 class Program(
@@ -61,6 +61,14 @@ class NoInterrupt : Interrupt {
 
 }
 
-class InterruptStopBeforeSecondExecution : Interrupt {
-    override fun continueProgram(number: Int) = true
+class InterruptTerminateBeforeSecondExecution : Interrupt {
+    private val visitedLines: MutableList<Int> = mutableListOf()
+
+    override fun continueProgram(number: Int): Boolean {
+        return if (visitedLines.contains(number)) false
+        else {
+            visitedLines.add(number)
+            true
+        }
+    }
 }

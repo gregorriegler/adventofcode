@@ -19,7 +19,6 @@ class Day8Test {
             acc +6
         """.trimIndent()
 
-    @Disabled
     @Test
     fun acceptance() {
         val result: Int = day8(code)
