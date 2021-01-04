@@ -10,12 +10,18 @@ fun day8(code: String): Int {
 }
 
 class Program(val lines: List<String>) {
+
+    private var acc = 0
+
     fun run(interrupt: Interrupt = NoInterrupt()): Int {
-        if (lines.isEmpty()) return 0
-        if(lines[0].startsWith("acc")) {
-            return lines[0].substringAfter(' ').toInt()
+        lines.forEach { process(it) }
+        return acc
+    }
+
+    private fun process(instruction: String) {
+        if (instruction.startsWith("acc")) {
+            acc += instruction.substringAfter(' ').toInt()
         }
-        return 0
     }
 }
 

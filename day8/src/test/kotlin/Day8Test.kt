@@ -30,9 +30,10 @@ class Day8Test {
     @TestFactory
     fun program() = listOf(
         Triple("starts at 0", emptyList(), 0),
-        Triple("nop does nothing", listOf("nop +0"), 0),
         Triple("increments acc", listOf("acc +1"), 1),
         Triple("increments acc by 2", listOf("acc +2"), 2),
+        Triple("handles many instructions", listOf("acc +1", "acc +1"), 2),
+        Triple("nop does nothing", listOf("nop +0", "acc +1"), 1),
     )
         .map { (description, lines, expectedAcc) ->
             DynamicTest.dynamicTest(description) {
