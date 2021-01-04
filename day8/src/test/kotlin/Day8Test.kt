@@ -28,7 +28,7 @@ class Day8Test {
     }
 
     @TestFactory
-    fun program() = listOf(
+    fun instructions() = listOf(
         Triple("starts at 0", emptyList(), 0),
         Triple("increments acc", listOf("acc +1"), 1),
         Triple("increments acc by 2", listOf("acc +2"), 2),
@@ -43,4 +43,20 @@ class Day8Test {
                 assertThat(Program(lines).run()).isEqualTo(expectedAcc)
             }
         }
+
+    @Test
+    fun interrupt() {
+        val lineTracker = LineTracker()
+        Program(listOf("jmp +2", "acc +3", "acc +1", "nop +0"), lineTracker).run()
+
+        assertThat(lineTracker.visitedLines).containsExactly(0, 2, 3)
+    }
+}
+
+class LineTracker : Interrupt {
+    val visitedLines: MutableList<Int> = mutableListOf()
+
+    override fun hit(number: Int) {
+        visitedLines.add(number)
+    }
 }

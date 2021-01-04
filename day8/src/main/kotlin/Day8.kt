@@ -5,15 +5,17 @@ fun main() {
 }
 
 fun day8(code: String): Int {
-    return Program(code.lines())
-        .run(InterruptBeforeSecondExecution())
+    return Program(code.lines(), InterruptStopBeforeSecondExecution()).run()
 }
 
-class Program(val lines: List<String>) {
+class Program(
+    private val lines: List<String>,
+    private val interrupt: Interrupt = NoInterrupt()
+) {
 
     private var acc = 0
 
-    fun run(interrupt: Interrupt = NoInterrupt()): Int {
+    fun run(): Int {
         executeLine(0)
         return acc
     }
@@ -21,6 +23,7 @@ class Program(val lines: List<String>) {
     private fun executeLine(number: Int) {
         if (number >= lines.size) return
 
+        interrupt.hit(number)
         executeLine(instruction(lines[number], number))
     }
 
@@ -50,11 +53,14 @@ class Program(val lines: List<String>) {
 }
 
 interface Interrupt {
+    fun hit(number: Int)
 }
 
 class NoInterrupt : Interrupt {
+    override fun hit(number: Int) = Unit
 
 }
 
-class InterruptBeforeSecondExecution : Interrupt {
+class InterruptStopBeforeSecondExecution : Interrupt {
+    override fun hit(number: Int) = Unit
 }
