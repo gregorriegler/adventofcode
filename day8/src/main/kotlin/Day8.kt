@@ -5,20 +5,26 @@ fun main() {
 }
 
 fun day8(code: String): Int {
-    val program = Program(code.lines())
-    return program.run(InterruptBeforeSecondExecution())
+    return Program(code.lines())
+        .run(InterruptBeforeSecondExecution())
 }
 
-class Program(lines: List<String>) {
-    fun run(interrupt: Interrupt): Int {
-        return 5
+class Program(val lines: List<String>) {
+    fun run(interrupt: Interrupt = NoInterrupt()): Int {
+        if (lines.isEmpty()) return 0
+        if(lines[0].startsWith("acc")) {
+            return 1
+        }
+        return 0
     }
-
 }
 
 interface Interrupt {
 }
 
+class NoInterrupt : Interrupt {
+
+}
 
 class InterruptBeforeSecondExecution : Interrupt {
 }
