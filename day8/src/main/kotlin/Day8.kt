@@ -22,8 +22,8 @@ class Program(
 
     private fun executeLine(number: Int) {
         if (number >= lines.size) return
+        if (!interrupt.continueProgram(number)) return
 
-        interrupt.hit(number)
         executeLine(instruction(lines[number], number))
     }
 
@@ -53,14 +53,14 @@ class Program(
 }
 
 interface Interrupt {
-    fun hit(number: Int)
+    fun continueProgram(number: Int): Boolean
 }
 
 class NoInterrupt : Interrupt {
-    override fun hit(number: Int) = Unit
+    override fun continueProgram(number: Int) = true
 
 }
 
 class InterruptStopBeforeSecondExecution : Interrupt {
-    override fun hit(number: Int) = Unit
+    override fun continueProgram(number: Int) = true
 }

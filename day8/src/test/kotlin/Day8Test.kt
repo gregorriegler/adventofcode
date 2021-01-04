@@ -45,18 +45,34 @@ class Day8Test {
         }
 
     @Test
-    fun interrupt() {
+    fun interrupt_knows_linenumbers() {
         val lineTracker = LineTracker()
         Program(listOf("jmp +2", "acc +3", "acc +1", "nop +0"), lineTracker).run()
 
         assertThat(lineTracker.visitedLines).containsExactly(0, 2, 3)
     }
+
+    @Test
+    fun interrupt_can_terminate() {
+        val stopper = Stopper()
+        val acc = Program(listOf("acc +3", "acc +1", "nop +0"), stopper).run()
+
+        assertThat(acc).isEqualTo(0)
+    }
+
 }
 
 class LineTracker : Interrupt {
     val visitedLines: MutableList<Int> = mutableListOf()
 
-    override fun hit(number: Int) {
+    override fun continueProgram(number: Int): Boolean {
         visitedLines.add(number)
+        return true
     }
+}
+
+class Stopper : Interrupt {
+    val visitedLines: MutableList<Int> = mutableListOf()
+
+    override fun continueProgram(number: Int): Boolean = false
 }
