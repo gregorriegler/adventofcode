@@ -25,6 +25,13 @@ class Day8Test {
         assertThat(result).isEqualTo(5)
     }
 
+    @Test
+    fun `acceptance part2`() {
+        val result: Int = day8part2(code)
+
+        assertThat(result).isEqualTo(8)
+    }
+
     @TestFactory
     fun instructions() = listOf(
         Triple("starts at 0", emptyList(), 0),
