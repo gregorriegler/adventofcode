@@ -113,6 +113,6 @@ class TerminateBeforeSecondExecution : Interrupt {
     }
 }
 
-open class Result<T>(open val value: T)
+sealed class Result<T>(open val value: T)
 data class Success<T>(override val value: T) : Result<T>(value)
 data class Error<T>(override val value: T) : Result<T>(value)
