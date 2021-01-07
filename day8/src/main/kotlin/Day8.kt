@@ -5,31 +5,30 @@ fun main() {
     println(day8part2(File("day8/input").readText()))
 }
 
-fun day8(code: String): Int {
-    return Program(code.lines(), TerminateBeforeSecondExecution()).run().value
-}
+fun day8(code: String): Int = Program(code.lines(), TerminateBeforeSecondExecution()).run().value
 
-fun day8part2(code: String): Int {
-    return Alterations(code.lines())
+fun day8part2(code: String): Int =
+    Alterations(code.lines())
         .asSequence()
         .map { Program(it, TerminateBeforeSecondExecution()).run() }
         .first { it is Success }
         .value
-}
 
 class Alterations(
     private val lines: List<String>
 ) {
-    fun asSequence(): Sequence<List<String>> {
-        return lines.indices
+    fun asSequence(): Sequence<List<String>> =
+        lines.indices
             .map { toggleAt(lines, it) }
             .asSequence()
-    }
 
-    private fun toggleAt(lines: List<String>, toggleIndex: Int): List<String> {
-        return lines.mapIndexed { index, line -> if (index == toggleIndex) Instruction(line).toggle() else line }
-            .toList()
-    }
+    private fun toggleAt(lines: List<String>, toggleIndex: Int): List<String> =
+        lines.mapIndexed { index, line ->
+            if
+                (index == toggleIndex) Instruction(line).toggle()
+            else
+                line
+        }.toList()
 }
 
 class Program(
@@ -39,13 +38,12 @@ class Program(
 
     private var acc = 0
 
-    fun run(): Result<Int> {
-        return if (processLines() is Success) {
+    fun run(): Result<Int> =
+        if (processLines() is Success) {
             Success(acc)
         } else {
             Error(acc)
         }
-    }
 
     private fun processLines() = processLine(0)
 
@@ -69,8 +67,8 @@ class Program(
 }
 
 class Instruction(instruction: String) {
-    private val type:String
-    val number:Int
+    private val type: String
+    val number: Int
 
     init {
         instruction.split(' ').let {
@@ -79,8 +77,8 @@ class Instruction(instruction: String) {
         }
     }
 
-    fun isAcc() :Boolean = type == "acc"
-    fun isJmp() :Boolean = type == "jmp"
+    fun isAcc(): Boolean = type == "acc"
+    fun isJmp(): Boolean = type == "jmp"
     private fun isNop(): Boolean = type == "nop"
 
     fun toggle(): String {
@@ -104,13 +102,12 @@ class NoInterrupt : Interrupt {
 class TerminateBeforeSecondExecution : Interrupt {
     private val visitedLines: MutableList<Int> = mutableListOf()
 
-    override fun continueProgram(number: Int): Boolean {
-        return if (visitedLines.contains(number)) false
+    override fun continueProgram(number: Int): Boolean =
+        if (visitedLines.contains(number)) false
         else {
             visitedLines.add(number)
             true
         }
-    }
 }
 
 sealed class Result<T>(open val value: T)

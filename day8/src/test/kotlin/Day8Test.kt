@@ -50,7 +50,7 @@ class Day8Test {
         }
 
     @Test
-    fun interrupt_knows_linenumbers() {
+    fun `interrupt knows lineNumbers`() {
         val lineTracker = LineTracker()
         Program(listOf("jmp +2", "acc +3", "acc +1", "nop +0"), lineTracker).run()
 
@@ -58,7 +58,7 @@ class Day8Test {
     }
 
     @Test
-    fun interrupt_can_terminate() {
+    fun `interrupt can terminate`() {
         val stopper = Stopper()
         val acc = Program(listOf("acc +3", "acc +1", "nop +0"), stopper).run()
 
@@ -77,7 +77,5 @@ class LineTracker : Interrupt {
 }
 
 class Stopper : Interrupt {
-    val visitedLines: MutableList<Int> = mutableListOf()
-
     override fun continueProgram(number: Int): Boolean = false
 }
