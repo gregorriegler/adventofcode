@@ -9,14 +9,12 @@ fun day5(input: String): Int {
     return seats(input).maxOrNull()!!
 }
 
-fun day5pt2(input: String): Int {
-    val seats = seats(input)
-    return IntRange(seats.minOrNull()!!, seats.maxOrNull()!!)
-        .firstOrNull { it !in seats }!!
-}
+fun day5pt2(input: String): Int =
+    seats(input).let { seats ->
+        IntRange(seats.minOrNull()!!, seats.maxOrNull()!!).firstOrNull { it !in seats }!!
+    }
 
-fun seats(input: String) = input.lines()
-    .map { seatId(it) }
+fun seats(input: String) = input.lines().map { seatId(it) }
 
 fun seatId(seat: String): Int {
     val row = row(seat.take(7))
@@ -24,17 +22,15 @@ fun seatId(seat: String): Int {
     return row * 8 + column
 }
 
-fun row(rowInput: String): Int {
-    return rowInput.map { FrontOrBack.of(it) }
+fun row(rowInput: String): Int =
+    rowInput.map { FrontOrBack.of(it) }
         .fold(0..127) { range, frontOrBack -> frontOrBack.take(range) }
         .first
-}
 
-fun column(columnInput: String): Int {
-    return columnInput.map { LeftOrRight.of(it) }
+fun column(columnInput: String): Int =
+    columnInput.map { LeftOrRight.of(it) }
         .fold(0..7) { range, leftOrRight -> leftOrRight.take(range) }
         .first
-}
 
 enum class FrontOrBack(private val half: Half) {
     F(Half.Lower),

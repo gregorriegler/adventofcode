@@ -10,7 +10,7 @@ class Day5Test {
             BFFFBBFRRR
             FFFBBBFRRR
             BBFFBBFRLL
-        """.trimIndent()
+            """.trimIndent()
         )
 
         assertThat(result).isEqualTo(820)
@@ -19,11 +19,11 @@ class Day5Test {
     @Test
     fun `test seatId`() {
         assertThat(seatId("FFFFFFFLLL")).isEqualTo(0)
-        assertThat(seatId("BBBBBBBRRR")).isEqualTo(1015)
+        assertThat(seatId("BBBBBBBRRR")).isEqualTo(1023)
         assertThat(seatId("BFFFBBFRRR")).isEqualTo(567)
         assertThat(seatId("FFFBBBFRRR")).isEqualTo(119)
         assertThat(seatId("BBFFBBFRLL")).isEqualTo(820)
-        assertThat(seatId("FFFFBBBLRR")).isEqualTo(51)
+        assertThat(seatId("FFFFBBBLRR")).isEqualTo(59)
         assertThat(seatId("BBFBBFBLRL")).isEqualTo(874)
 
     }
