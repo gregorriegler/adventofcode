@@ -23,14 +23,14 @@ class Day6Test {
 
     @Test
     fun acceptance_part1() {
-        val result: Int = day6(input)
+        val result = day6(input)
 
         assertThat(result).isEqualTo(11)
     }
 
     @Test
     fun acceptance_part2() {
-        val result: Int = day6part2(input)
+        val result = day6part2(input)
 
         assertThat(result).isEqualTo(6)
     }
