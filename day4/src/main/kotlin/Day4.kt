@@ -11,23 +11,22 @@ fun day4(input: String): Int {
         .count()
 }
 
-fun splitByEmptyLine(input: String): List<String> = input.split(Regex("\n[\\s]*\n"))
-    .map { it.trim() }
-    .filter { it.isNotEmpty() }
+fun splitByEmptyLine(input: String): List<String> =
+    input.split(Regex("\n[\\s]*\n"))
+        .map { it.trim() }
+        .filter { it.isNotEmpty() }
 
-fun scanPassportData(input: String): PassportData {
-    return input.split(Regex("[\\s]+"))
+fun scanPassportData(input: String): PassportData =
+    input.split(Regex("[\\s]+"))
         .map { it.trim() }
         .filter { it.isNotEmpty() }
         .map { parsePair(it) }
         .let { PassportData(it) }
-}
 
-fun parsePair(input: String): Pair<Field, String> {
-    return input.split(":")
+fun parsePair(input: String): Pair<Field, String> =
+    input.split(":")
         .map { it.trim() }
         .let { Pair(Field.valueOf(it[0]), it[1]) }
-}
 
 fun valid(passport: PassportData): Boolean =
     Field.values().all { it.valid(passport.value[it]) }
