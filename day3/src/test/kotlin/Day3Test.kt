@@ -23,8 +23,6 @@ class Day3Test {
     fun `right 3 down 1 slope`() {
         val slope = RightDownSlope(Wood(woodInput()), 3, 1)
 
-        assertThat(slope.iterator().hasNext()).isTrue
-        assertThat(slope.iterator().next()).isEqualTo(O)
         assertThat(slope.iterator().asSequence().toList()).containsExactly(
             O, X, O, X, X, O, X, X, X, X
         )

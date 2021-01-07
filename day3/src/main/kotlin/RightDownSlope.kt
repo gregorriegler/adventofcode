@@ -16,9 +16,7 @@ class SlopeIterator(
     var row = 0
     var col = 0
 
-    override fun hasNext(): Boolean {
-        return wood.at(row + nextRow, col + nextCol) != null
-    }
+    override fun hasNext(): Boolean = wood.at(row + nextRow, col + nextCol) != null
 
     override fun next(): Field {
         row += nextRow
