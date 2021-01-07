@@ -1,15 +1,10 @@
 import java.io.File
 
-fun main() {
-    countValidPasswords(
-        File("day2/input.txt").readLines()
-    ) { CharPositionRule(it) }
-        .let { println(it) }
-}
+fun main() = countValidPasswords(File("day2/input.txt").readLines()) { CharPositionRule(it) }
+    .run { println(this) }
 
-fun countValidPasswords(lines: List<String>, ruleSupplier: (String) -> PasswordRule): Int {
-    return lines.count { validate(it, ruleSupplier) }
-}
+fun countValidPasswords(lines: List<String>, ruleSupplier: (String) -> PasswordRule): Int =
+    lines.count { validate(it, ruleSupplier) }
 
 fun validate(line: String, ruleSupplier: (String) -> PasswordRule): Boolean {
     val (rule, password) = split(line, ruleSupplier)
@@ -27,15 +22,15 @@ interface PasswordRule {
 
 class CharsCountRule(private val spec: String) : PasswordRule {
     override fun isValid(password: String): Boolean {
-        val (min, max) = range()
         return password.filter { char() == it }
             .count()
-            .let { it in min..max }
+            .let { it in range() }
     }
 
-    private fun range() = spec.split(' ')[0]
+    private fun range(): IntRange = spec.split(' ')[0]
         .split('-')
         .map { it.toInt() }
+        .let { it.first()..it.last() }
 
     private fun char() = spec.last()
 }
