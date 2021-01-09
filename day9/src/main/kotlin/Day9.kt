@@ -5,17 +5,20 @@ fun main() {
     println(day9part2(File("day9/input").readText()))
 }
 
-fun day9(input: String) = xmas(input, 25)
+fun day9(input: String) = xmas(input.toNumberSequence(), 25)
 
-fun day9part2(input: String) = encryptionWeakness(input, 25)
+fun day9part2(input: String) = encryptionWeakness(input.toNumberSequence(), 25)
 
-fun encryptionWeakness(input: String, preambleLength: Int): Long {
-    val xmas = xmas(input, preambleLength)
+fun String.toNumberSequence() = this.lineSequence().map(String::toLong)
+
+fun encryptionWeakness(input: Sequence<Long>, preambleLength: Int): Long {
+    val xmas = xmas(
+        input, preambleLength
+    )
     return 62
 }
 
-fun xmas(input: String, preambleLength: Int) = input.lineSequence()
-    .map(String::toLong)
+fun xmas(input: Sequence<Long>, preambleLength: Int) = input
     .windowed(preambleLength + 1, 1)
     .map {
         Xmas(

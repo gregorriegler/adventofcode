@@ -25,11 +25,11 @@ class Day9Test {
             277
             309
             576
-        """.trimIndent()
+        """.trimIndent().toNumberSequence()
 
     @Test
     fun acceptance() {
-        val result = xmas(input, 5)
+        val result = xmas(input,5)
 
         assertThat(result).isEqualTo(127)
     }
