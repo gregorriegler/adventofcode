@@ -5,29 +5,43 @@ fun main() {
     println(day9part2(File("day9/input").readText()))
 }
 
-fun day9(input: String) = xmas(input.toNumberSequence(), 25)
+fun day9(input: String) = xmas(input.toListOfNumbers(), 25)
 
-fun day9part2(input: String) = encryptionWeakness(input.toNumberSequence(), 25)
+fun day9part2(input: String) = encryptionWeakness(input.toListOfNumbers(), 25)
 
-fun String.toNumberSequence() = this.lineSequence().map(String::toLong)
+fun String.toListOfNumbers() = this.lines().map(String::toLong)
 
-fun encryptionWeakness(input: Sequence<Long>, preambleLength: Int): Long {
-    val xmas = xmas(
-        input, preambleLength
-    )
-    return 62
+fun encryptionWeakness(input: List<Long>, preambleLength: Int): Long {
+    val xmas = xmas(input, preambleLength)
+    return input.indices
+        .map { input.drop(it) }
+        .map { contiguousSumEquals(it, xmas) }
+        .first { it.isNotEmpty() }
+        .let { it.minOrNull()!! + it.maxOrNull()!! }
 }
 
-fun xmas(input: Sequence<Long>, preambleLength: Int) = input
-    .windowed(preambleLength + 1, 1)
-    .map {
-        Xmas(
-            target = it.last(),
-            preamble = it.take(preambleLength)
-        )
+fun contiguousSumEquals(input: List<Long>, target: Long): List<Long> {
+    var contiguousSum: Long = 0
+    var i = 0
+    while (contiguousSum < target) {
+        contiguousSum += input[i]
+        i++
     }
-    .first { it.notSummable() }
-    .target
+    if(contiguousSum == target) return input.take(i)
+    return emptyList()
+}
+
+fun xmas(input: List<Long>, preambleLength: Int) =
+    input
+        .windowed(preambleLength + 1, 1)
+        .map {
+            Xmas(
+                target = it.last(),
+                preamble = it.take(preambleLength)
+            )
+        }
+        .first { it.notSummable() }
+        .target
 
 data class Xmas(
     val target: Long,

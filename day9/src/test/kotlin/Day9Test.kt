@@ -25,7 +25,7 @@ class Day9Test {
             277
             309
             576
-        """.trimIndent().toNumberSequence()
+        """.trimIndent().toListOfNumbers()
 
     @Test
     fun acceptance() {
