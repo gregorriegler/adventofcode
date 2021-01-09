@@ -39,9 +39,5 @@ data class Xmas(
 
     fun notSummable(): Boolean = !summable()
 
-    private fun summable() =
-        (0 until preamble.size - 1)
-            .map { preamble.drop(it) }
-            .flatMap { list -> list.drop(1).map { it + list.first() } }
-            .contains(target)
+    private fun summable() = preamble.any { target - it in preamble }
 }
