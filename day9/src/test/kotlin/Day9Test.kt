@@ -34,4 +34,13 @@ class Day9Test {
         assertThat(result).isEqualTo(127)
     }
 
+    @Test
+    fun `acceptance part2`() {
+        val result = encryptionWeakness(input, 5)
+
+        assertThat(result).isEqualTo(62)
+    }
+
+
+
 }
