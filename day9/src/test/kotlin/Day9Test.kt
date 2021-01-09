@@ -29,7 +29,7 @@ class Day9Test {
 
     @Test
     fun acceptance() {
-        val result: Int = day9(input)
+        val result = xmas(input, 5)
 
         assertThat(result).isEqualTo(127)
     }
