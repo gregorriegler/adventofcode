@@ -19,9 +19,7 @@ fun day10part2(input: String): Long {
     val pathsToJolt: MutableMap<Int, Long> = mutableMapOf(0 to 1L)
 
     jolts.drop(1).forEach {
-        pathsToJolt[it] =
-            (1..3).map { previous -> pathsToJolt.getOrDefault(it - previous, 0) }
-                .sum()
+        pathsToJolt[it] = (1..3).sumOf { previous -> pathsToJolt.getOrDefault(it - previous, 0) }
     }
 
     return pathsToJolt.getValue(jolts.last())
