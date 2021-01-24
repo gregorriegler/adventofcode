@@ -4,19 +4,7 @@ import org.junit.jupiter.api.Test
 
 class Day10Test {
 
-    private val input = """
-            16
-            10
-            15
-            5
-            1
-            11
-            7
-            19
-            6
-            12
-            4
-        """.trimIndent()
+    private val input = "16\n10\n15\n5\n1\n11\n7\n19\n6\n12\n4"
 
     @Test
     fun acceptance() {
