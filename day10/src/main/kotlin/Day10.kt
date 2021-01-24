@@ -15,16 +15,16 @@ fun day10(input: String): Int {
 }
 
 fun day10part2(input: String): Long {
-    val adapters = sortedJolts(input)
-    val pathsToAdapter: MutableMap<Int, Long> = mutableMapOf(0 to 1L)
+    val jolts = sortedJolts(input)
+    val pathsToJolt: MutableMap<Int, Long> = mutableMapOf(0 to 1L)
 
-    adapters.drop(1).forEach {
-        pathsToAdapter[it] =
-            (1..3).map { previous -> pathsToAdapter.getOrDefault(it - previous, 0) }
+    jolts.drop(1).forEach {
+        pathsToJolt[it] =
+            (1..3).map { previous -> pathsToJolt.getOrDefault(it - previous, 0) }
                 .sum()
     }
 
-    return pathsToAdapter.getValue(adapters.last())
+    return pathsToJolt.getValue(jolts.last())
 }
 
 fun sortedJolts(input: String): List<Int> = input.lines()
